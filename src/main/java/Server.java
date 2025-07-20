@@ -1,5 +1,4 @@
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
-import sun.misc.Signal;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -16,7 +15,7 @@ public class Server {
         server.init(address, 48433);
     }
 
-    private void addVersionEndpoint(KubernetesMockServer server) {
+    private void addVersionEndpoint(final KubernetesMockServer server) {
         final String response = """
         {
             "major": "1",
