@@ -5,7 +5,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 FROM ghcr.io/octopusdeploylabs/k8s-workertools
-RUN apt install -y default-jre
+RUN apt-get install -y default-jre procps
 WORKDIR /k8smock
 COPY --from=builder /app/target/mockk8s.jar .
 COPY kubectl /app
