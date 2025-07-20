@@ -1,0 +1,4 @@
+#!/bin/bash
+
+java -jar /app/target/mockk8s.jar &
+/usr/bin/kubectl "$@"
