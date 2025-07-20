@@ -1,6 +1,7 @@
 FROM maven:eclipse-temurin AS builder
 WORKDIR /app
 COPY pom.xml .
+RUN mvn verify --fail-never
 COPY src ./src
 RUN mvn clean package -DskipTests --batch-mode
 
