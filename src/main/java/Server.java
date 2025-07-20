@@ -1,4 +1,5 @@
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
+import sun.misc.Signal;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
