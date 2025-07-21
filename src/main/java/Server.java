@@ -43,6 +43,7 @@ public class Server {
         addApiAuthenticationEndpoint(server);
         addApiFlowControlEndpointV1(server);
         addApiDefaultNamespaceEndpoint(server);
+        addSelfSubjectAccessReviewsEndpoint(server);
         final InetAddress address = InetAddress.getByName("0.0.0.0");
         server.init(address, 48080);
     }
@@ -2692,5 +2693,31 @@ public class Server {
                     .andReturn(200, response.stripIndent())
                     .always();
         }
+    }
+
+    private void addSelfSubjectAccessReviewsEndpoint(final KubernetesMockServer server) {
+        final String response = """
+                {
+                    "kind": "SelfSubjectAccessReview",
+                    "apiVersion": "authorization.k8s.io/v1",
+                    "spec": {
+                        "resourceAttributes": {
+                            "namespace": "default",
+                            "verb": "get",
+                            "resource": "pods"
+                        }
+                    },
+                    "status": {
+                        "allowed": true,
+                        "reason": "User has permission to get pods in the default namespace."
+                    }
+                }""";
+
+            server.expect()
+                    .post()
+                    .withPath("/apis/authorization.k8s.io/v1/selfsubjectaccessreviews")
+                    .andReturn(200, response.stripIndent())
+                    .always();
+
     }
 }
