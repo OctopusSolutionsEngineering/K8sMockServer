@@ -9,10 +9,10 @@ public class Server {
     }
 
     public void start() throws UnknownHostException {
-        final KubernetesMockServer server = new KubernetesMockServer();
+        final KubernetesMockServer server = new KubernetesMockServer(false);
         addVersionEndpoint(server);
         final InetAddress address = InetAddress.getByName("localhost");
-        server.init(address, 48433);
+        server.init(address, 48080);
     }
 
     private void addVersionEndpoint(final KubernetesMockServer server) {

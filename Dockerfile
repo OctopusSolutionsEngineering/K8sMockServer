@@ -17,4 +17,5 @@ RUN DEBIAN_FRONTEND=noninteractive \
 WORKDIR /k8smock
 COPY --from=builder /app/target/mockk8s.jar .
 COPY kubectl .
+RUN chmod +x kubectl
 ENV PATH="/k8smock:${PATH}"
