@@ -18,6 +18,8 @@ import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
@@ -47,7 +49,7 @@ public class Server {
         final KubernetesMockServer server = new KubernetesMockServer(new Context(Serialization.jsonMapper()),
                 new MockWebServer(), responses, dispatcher, false);
 
-
+        addHealthCheck(server);
         addVersionEndpoint(server);
         addApiEndpoint(server);
         addApisEndpoint(server);
@@ -81,6 +83,54 @@ public class Server {
         addOpenApiV3HashEndpoint(server);
         final InetAddress address = InetAddress.getByName("0.0.0.0");
         server.init(address, 48080);
+    }
+
+    /**
+     * This method adds a health check endpoint that checks for the existence of a file at
+     * /tmp/online and returns "ok" if the file exists, or "offline" if it does not.
+     * The purpose of this endpoint is to allow the server to switch between an "online" and "offline" state
+     * by creating or deleting the file at a shared location. This is used to simulate a problem with the server
+     * and to allow the server to be restarted in a "healthy" state.
+     */
+    private void addHealthCheck(final KubernetesMockServer server) {
+            final String marker = "/tmp/online";
+
+            server.expect()
+                    .get()
+                    .withPath("/health")
+                    .andReply(new ResponseProvider<Object>() {
+                        @Override
+                        public Object getBody(final RecordedRequest request) {
+                            if (Files.exists(Paths.get(marker))) {
+                                return "ok";
+                            } else {
+                                return "offline";
+                            }
+                        }
+
+                        @Override
+                        public int getStatusCode(final RecordedRequest request) {
+                            if (Files.exists(Paths.get(marker))) {
+                                return 200;
+                            } else {
+                                return 500;
+                            }
+                        }
+
+                        @Override
+                        public Headers getHeaders() {
+                            return Headers.builder().build();
+                        }
+
+                        @Override
+                        public void setHeaders(Headers headers) {
+
+                        }
+                    })
+                    .always();
+
+
+
     }
 
     private void addApiEndpoint(final KubernetesMockServer server) {
