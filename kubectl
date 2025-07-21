@@ -1,8 +1,11 @@
 #!/bin/bash
 
-pkill java
-java -jar /k8smock/mockk8s.jar &
-sleep 5
+# Config commends don't require the mock server
+if [ "$1" != "config" ]; then
+  pkill java
+  java -jar /k8smock/mockk8s.jar &
+  sleep 5
+fi
 
 /usr/bin/kubectl "$@"
 
