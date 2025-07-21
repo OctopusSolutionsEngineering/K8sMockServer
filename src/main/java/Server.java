@@ -1,7 +1,11 @@
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
+import io.fabric8.mockwebserver.http.Headers;
+import io.fabric8.mockwebserver.http.RecordedRequest;
+import io.fabric8.mockwebserver.utils.ResponseProvider;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 
 public class Server {
     private static final String[] TIMEOUTS = {
@@ -2696,28 +2700,33 @@ public class Server {
     }
 
     private void addSelfSubjectAccessReviewsEndpoint(final KubernetesMockServer server) {
-        // I'm not too sure about the response structure - this was what chatgpt provided
-        final String response = """
-                {
-                    "kind": "SelfSubjectAccessReview",
-                    "apiVersion": "authorization.k8s.io/v1",
-                    "spec": {
-                        "resourceAttributes": {
-                            "namespace": "default",
-                            "verb": "get",
-                            "resource": "pods"
-                        }
-                    },
-                    "status": {
-                        "allowed": true,
-                        "reason": "User has permission to get pods in the default namespace."
-                    }
-                }""";
-
             server.expect()
                     .post()
                     .withPath("/apis/authorization.k8s.io/v1/selfsubjectaccessreviews")
-                    .andReturn(200, response.stripIndent())
+                    .andReply(new ResponseProvider() {
+
+                        @Override
+                        public Object getBody(final RecordedRequest request) {
+                            // The body is a protobuf binary blob, so we just print it as a string for debugging.
+                            System.out.println(request.getBody().readString(StandardCharsets.UTF_8));
+                            return null;
+                        }
+
+                        @Override
+                        public int getStatusCode(final RecordedRequest request) {
+                            return 404;
+                        }
+
+                        @Override
+                        public Headers getHeaders() {
+                            return Headers.builder().build();
+                        }
+
+                        @Override
+                        public void setHeaders(Headers headers) {
+
+                        }
+                    })
                     .always();
 
     }
