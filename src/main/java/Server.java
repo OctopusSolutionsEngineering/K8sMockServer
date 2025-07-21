@@ -1,6 +1,14 @@
+import io.fabric8.kubernetes.client.server.mock.KubernetesMixedDispatcher;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
+import io.fabric8.kubernetes.client.utils.Serialization;
+import io.fabric8.mockwebserver.Context;
+import io.fabric8.mockwebserver.MockWebServer;
+import io.fabric8.mockwebserver.ServerRequest;
+import io.fabric8.mockwebserver.ServerResponse;
+import io.fabric8.mockwebserver.http.Dispatcher;
 import io.fabric8.mockwebserver.http.Headers;
 import io.fabric8.mockwebserver.http.RecordedRequest;
+import io.fabric8.mockwebserver.internal.MockDispatcher;
 import io.fabric8.mockwebserver.utils.ResponseProvider;
 
 import java.io.BufferedReader;
@@ -10,6 +18,9 @@ import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Queue;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -28,7 +39,15 @@ public class Server {
     }
 
     public void start() throws UnknownHostException {
-        final KubernetesMockServer server = new KubernetesMockServer(false);
+
+        //final KubernetesMockServer server = new KubernetesMockServer(false);
+
+        final Map<ServerRequest, Queue<ServerResponse>> responses = new HashMap<>();
+        final Dispatcher dispatcher = new KubernetesMixedDispatcher(responses);
+        final KubernetesMockServer server = new KubernetesMockServer(new Context(Serialization.jsonMapper()),
+                new MockWebServer(), responses, dispatcher, false);
+
+
         addVersionEndpoint(server);
         addApiEndpoint(server);
         addApisEndpoint(server);
