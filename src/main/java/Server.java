@@ -2696,6 +2696,7 @@ public class Server {
     }
 
     private void addSelfSubjectAccessReviewsEndpoint(final KubernetesMockServer server) {
+        // I'm not too sure about the response structure - this was what chatgpt provided
         final String response = """
                 {
                     "kind": "SelfSubjectAccessReview",
