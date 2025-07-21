@@ -37,6 +37,12 @@ public class Server {
                 .withPath("/api?timeout=1m0s")
                 .andReturn(200, response.stripIndent())
                 .always();
+
+        server.expect()
+                .get()
+                .withPath("/api?timeout=32s")
+                .andReturn(200, response.stripIndent())
+                .always();
     }
 
     private void addApisEndpoint(final KubernetesMockServer server) {
@@ -306,6 +312,12 @@ public class Server {
         server.expect()
                 .get()
                 .withPath("/apis?timeout=1m0s")
+                .andReturn(200, response.stripIndent())
+                .always();
+
+        server.expect()
+                .get()
+                .withPath("/apis?timeout=32s")
                 .andReturn(200, response.stripIndent())
                 .always();
     }
