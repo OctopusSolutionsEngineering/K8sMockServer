@@ -18,4 +18,5 @@ WORKDIR /k8smock
 COPY --from=builder /app/target/mockk8s.jar .
 COPY kubectl .
 RUN chmod +x kubectl
+COPY config /root/.kube/config
 ENV PATH="/k8smock:${PATH}"
