@@ -314,8 +314,8 @@ public class Server {
         final String response = """
         {
             "major": "1",
-            "minor": "31",
-            "gitVersion": "v1.31.0",
+            "minor": "33",
+            "gitVersion": "v1.33.0",
             "gitCommit": "9edcffcde5595e8a5b1a35f88c421764e575afce",
             "gitTreeState": "clean",
             "buildDate": "2024-08-13T22:44:37Z",
