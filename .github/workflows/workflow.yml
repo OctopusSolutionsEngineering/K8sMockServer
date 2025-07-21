@@ -27,5 +27,5 @@ jobs:
 
       - name: 'Build Image'
         run: |
-          docker build . --tag ghcr.io/mcasperson/mockk8s:latest
-          docker push ghcr.io/mcasperson/mockk8s:latest
+          docker build . --tag ghcr.io/${{ github.repository_owner }}/mockk8s:latest
+          docker push ghcr.io/${{ github.repository_owner }}/mockk8s:latest
