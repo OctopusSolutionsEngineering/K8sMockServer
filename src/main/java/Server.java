@@ -35,5 +35,11 @@ public class Server {
                 .withPath("/version?timeout=32s")
                 .andReturn(200, response.stripIndent())
                 .always();
+
+        server.expect()
+                .get()
+                .withPath("/version?timeout=1m0s")
+                .andReturn(200, response.stripIndent())
+                .always();
     }
 }

@@ -1,10 +1,9 @@
 #!/bin/bash
 
-if pgrep -x "java" > /dev/null; then
-    echo "Mock server already running."
-else
-    java -jar /k8smock/mockk8s.jar &
-    sleep 5
-fi
+pkill java
+java -jar /k8smock/mockk8s.jar &
+sleep 5
 
 /usr/bin/kubectl "$@"
+
+pkill java
