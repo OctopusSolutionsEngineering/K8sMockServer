@@ -2,11 +2,9 @@
 
 # Config commends don't require the mock server
 if [ "$1" != "config" ]; then
-  echo "##octopus[stdout-verbose]"
   pkill java
-  java -jar /k8smock/mockk8s.jar & 2>&1
+  java -jar /k8smock/mockk8s.jar 2>&1 &
   sleep 5
-  echo "##octopus[stdout-default]"
 fi
 
 /usr/bin/kubectl "$@"
