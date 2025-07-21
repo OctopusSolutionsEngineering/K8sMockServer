@@ -13,7 +13,7 @@ public class Server {
         addVersionEndpoint(server);
         addApiEndpoint(server);
         addApisEndpoint(server);
-        final InetAddress address = InetAddress.getByName("localhost");
+        final InetAddress address = InetAddress.getByName("0.0.0.0");
         server.init(address, 48080);
     }
 
