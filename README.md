@@ -9,6 +9,12 @@ Because of this, the Kubernetes server appears to be blank with each step run by
 * URL: `http://localhost:48080`
 * Health Check Container Image: `octopussolutionsengineering/k8s-mockserver` from a docker feed pointing to `ghcr.io`.
 
+# Project Configuration
+
+* Add the `Octopus.Action.Container.Options` variable and set the value to `-v /tmp:/tmp`. This mounts the temporary directory of the worker into the container. 
+* The mock server will return 200 OK for the endpoint `http://localhost:48080/health` if the file `/tmp/online` exists. If the file does not exist, it will return 500.
+* Steps can be added that check the return code of the endpoint `http://localhost:48080/health` to simulate a smoke test. These steps will succeed for fail based on the existence of the `/tmp/online` file.
+
 # Step Configuration
 
 * Container Image: `octopussolutionsengineering/k8s-mockserver` from a docker feed pointing to `ghcr.io`.
