@@ -3,7 +3,7 @@
 # Config commends don't require the mock server
 if [ "$1" != "config" ]; then
   pkill java
-  java -jar /k8smock/mockk8s.jar 2>&1 &
+  java -jar /k8smock/mockk8s.jar > /dev/null 2>&1 &
   sleep 5
 fi
 
