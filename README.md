@@ -15,6 +15,22 @@ Because of this, the Kubernetes server appears to be blank with each step run by
 * The mock server will return 200 OK for the endpoint `http://localhost:48080/health` if the file `/tmp/online` exists. If the file does not exist, it will return 500.
 * Steps can be added that check the return code of the endpoint `http://localhost:48080/health` to simulate a smoke test. These steps will succeed for fail based on the existence of the `/tmp/online` file.
 
+This is an example of a smoke test step that checks the health of the mock server:
+
+```bash
+CODE=$(curl --silent --output /dev/null --write-out "%{http_code}" "http://localhost:48080/health")
+if [[ $CODE != "200" ]]
+then
+  exit 1
+fi
+```
+
+This is an example of a step that creates the online marker file:
+
+```bash
+touch /tmp/online
+```
+
 # Step Configuration
 
 * Container Image: `octopussolutionsengineering/k8s-mockserver` from a docker feed pointing to `ghcr.io`.
