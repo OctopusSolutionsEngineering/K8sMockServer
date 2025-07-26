@@ -7,6 +7,10 @@ if [ "$1" != "config" ]; then
   sleep 5
 fi
 
+# We need to disable validation to prevent kubectl from trying to download the openapi spec.
+# The request for the openapi spec includes a hash that changes with each request, for example,
+# /openapi/v3/api/v1?hash=13A652D4D75C2ABA714E4602AAC9D534F6AD8738AB2B3E6EA6A756D14FF29D7AA87E75E31497CFA79CB252770E266339863D4D1BF2D1BBAAD6D7840929EDDBF7&timeout=32s
+# and the mock server does not support wildcard paths.
 /usr/bin/kubectl --validate=false "$@"
 
 pkill java
