@@ -34,3 +34,8 @@ jobs:
         run: |
           docker build . --tag ghcr.io/${REPO}/k8s-mockserver:latest
           docker push ghcr.io/${REPO}/k8s-mockserver:latest
+
+      - name: 'Build Image 2'
+        run: |
+          docker build . -f DockerfileServer --tag ghcr.io/${REPO}/k8s-mockserver-standalone:latest
+          docker push ghcr.io/${REPO}/k8s-mockserver-standalone:latest
