@@ -43,7 +43,7 @@ public class Server {
         //final KubernetesMockServer server = new KubernetesMockServer(false);
 
         final Map<ServerRequest, Queue<ServerResponse>> responses = new HashMap<>();
-        final Dispatcher dispatcher = new KubernetesMixedDispatcher(responses);
+        final Dispatcher dispatcher = new CustomKubernetesMixedDispatcher(responses);
         final KubernetesMockServer server = new KubernetesMockServer(new Context(Serialization.jsonMapper()),
                 new MockWebServer(), responses, dispatcher, false);
 
