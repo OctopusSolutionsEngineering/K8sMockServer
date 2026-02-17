@@ -5,7 +5,7 @@
     <version>0.0.1</version>
 
     <properties>
-        <kubernetes-server-mock.version>7.3.1</kubernetes-server-mock.version>
+        <kubernetes-server-mock.version>7.5.2</kubernetes-server-mock.version>
     </properties>
 
     <dependencies>

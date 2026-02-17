@@ -8,7 +8,6 @@ import io.fabric8.mockwebserver.ServerResponse;
 import io.fabric8.mockwebserver.http.Dispatcher;
 import io.fabric8.mockwebserver.http.Headers;
 import io.fabric8.mockwebserver.http.RecordedRequest;
-import io.fabric8.mockwebserver.internal.MockDispatcher;
 import io.fabric8.mockwebserver.utils.ResponseProvider;
 
 import java.io.BufferedReader;
@@ -23,7 +22,6 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
-import java.util.Scanner;
 import java.util.stream.Collectors;
 
 /**
