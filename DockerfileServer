@@ -1,0 +1,11 @@
+FROM maven:eclipse-temurin AS builder
+WORKDIR /app
+COPY pom.xml .
+RUN mvn verify --fail-never
+COPY src ./src
+RUN mvn clean package -DskipTests --batch-mode
+
+FROM eclipse-temurin:25
+WORKDIR /app
+COPY --from=builder /app/target/mockk8s.jar .
+CMD ["java", "-jar", "mockk8s.jar"]

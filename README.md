@@ -1,4 +1,4 @@
-This project implements a mock Kubernetes API using the Fabric8 Mock Kubernetes Server. This allows an Octopus project to complete a real Kubernetes deployment without requiring a real Kubernetes cluster.
+This project implements a mock Kubernetes API using the [Fabric8 Mock Kubernetes Server](https://github.com/fabric8io/kubernetes-client?tab=readme-ov-file#mocking-kubernetes). This allows an Octopus project to complete a real Kubernetes deployment without requiring a real Kubernetes cluster.
 
 The mock server is embedded in an Octopus Container Image. The server is started when `kubectl` is called, and is destroyed once `kubectl` exits.
 
