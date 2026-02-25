@@ -34,17 +34,29 @@ public class Server {
             "32s"
     };
 
+    private KubernetesMockServer server;
+
     public Server() {
 
     }
 
+    public void stop() {
+        if (server != null) {
+            server.destroy();
+        }
+        server = null;
+    }
+
     public void start() throws UnknownHostException {
+        if (server != null) {
+            throw new IllegalStateException("Server is already running");
+        }
 
         //final KubernetesMockServer server = new KubernetesMockServer(false);
 
         final Map<ServerRequest, Queue<ServerResponse>> responses = new HashMap<>();
         final Dispatcher dispatcher = new KubernetesMixedDispatcher(responses);
-        final KubernetesMockServer server = new KubernetesMockServer(new Context(Serialization.jsonMapper()),
+        server = new KubernetesMockServer(new Context(Serialization.jsonMapper()),
                 new MockWebServer(), responses, dispatcher, false);
 
         addHealthCheck(server);
