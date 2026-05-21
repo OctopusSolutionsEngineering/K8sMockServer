@@ -4,6 +4,12 @@ The mock server is embedded in an Octopus Container Image. The server is started
 
 Because of this, the Kubernetes server appears to be blank with each step run by Octopus.
 
+# Hosted mock server
+
+When hosted as a web app, the server will appear to persist K8s resources for 5 minutes. After that time, the server is restarted, and any resources are deleted.
+
+Note no actual K8s resources are stored. There is no compute, networking, or storage layer that this mock server interacts with. The server simply exposes a mock API that makes it appear that resources are created.
+
 # Target Configuration
 
 * URL: `http://localhost:48080`
