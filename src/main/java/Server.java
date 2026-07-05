@@ -22,6 +22,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -55,7 +56,7 @@ public class Server {
         //final KubernetesMockServer server = new KubernetesMockServer(false);
 
         final Map<ServerRequest, Queue<ServerResponse>> responses = new HashMap<>();
-        final Dispatcher dispatcher = new KubernetesMixedDispatcher(responses);
+        final Dispatcher dispatcher = new CustomDispatcher(responses);
         server = new KubernetesMockServer(new Context(Serialization.jsonMapper()),
                 new MockWebServer(), responses, dispatcher, false);
 
