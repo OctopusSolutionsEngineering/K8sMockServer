@@ -6,9 +6,13 @@ Because of this, the Kubernetes server appears to be blank with each step run by
 
 # Hosted mock server
 
-When hosted as a web app, the server will appear to persist K8s resources for 5 minutes. After that time, the server is restarted, and any resources are deleted.
+When hosted as a web app, the server will appear to persist K8s resources for 15 minutes. After that time, the server is restarted, and any resources are deleted.
 
 Note no actual K8s resources are stored. There is no compute, networking, or storage layer that this mock server interacts with. The server simply exposes a mock API that makes it appear that resources are created.
+
+The server does not share state between instances, so if you scale the server across multiple instances, new resources will only appear on one instance.
+
+https://mockk8s.octopusdemos.com is a hosted instance of the Mock K8s server.
 
 # Target Configuration
 
