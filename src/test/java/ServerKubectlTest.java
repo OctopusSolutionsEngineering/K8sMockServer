@@ -88,6 +88,39 @@ public class ServerKubectlTest {
         assertEquals(ROLLOUT_NAME, rollout.get("metadata").get("name").asText());
     }
 
+    /**
+     * Verifies patching a Rollout works against the mock server. Uses "--type=merge" (JSON merge patch)
+     * rather than the kubectl default of strategic merge patch, because real Kubernetes only supports JSON
+     * merge patch and JSON patch for custom resources, not strategic merge patch.
+     */
+    @Test
+    public void kubectlCanPatchARollout() throws Exception {
+        assumeKubectlIsAvailable();
+
+        final int port = findFreePort();
+        server.start(port);
+
+        final Path kubeconfig = writeKubeconfig(port);
+        final Path rolloutManifest = writeRolloutManifest();
+
+        final ProcessResult create = runKubectl(kubeconfig,
+                "create", "-f", rolloutManifest.toString(), "--validate=false");
+        assertEquals(0, create.exitCode, "kubectl create failed: " + create.stderr);
+
+        final ProcessResult patch = runKubectl(kubeconfig,
+                "patch", "rollout", ROLLOUT_NAME, "-n", NAMESPACE,
+                "--type=merge", "-p", "{\"spec\":{\"replicas\":3}}");
+        assertEquals(0, patch.exitCode, "kubectl patch failed: " + patch.stderr);
+
+        final ProcessResult get = runKubectl(kubeconfig,
+                "get", "rollout", ROLLOUT_NAME, "-n", NAMESPACE, "-o", "json");
+        assertEquals(0, get.exitCode, "kubectl get failed: " + get.stderr);
+
+        final ObjectMapper mapper = new ObjectMapper();
+        final JsonNode rollout = mapper.readTree(get.stdout);
+        assertEquals(3, rollout.get("spec").get("replicas").asInt());
+    }
+
     private void assumeKubectlIsAvailable() {
         try {
             final Process process = new ProcessBuilder(KUBECTL_BIN, "version", "--client")
