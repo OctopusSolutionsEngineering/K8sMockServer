@@ -6,6 +6,7 @@
 
     <properties>
         <kubernetes-server-mock.version>7.8.0</kubernetes-server-mock.version>
+        <junit.version>5.10.2</junit.version>
     </properties>
 
     <dependencies>
@@ -19,6 +20,12 @@
             <artifactId>kubernetes-client</artifactId>
             <version>${kubernetes-server-mock.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <finalName>mockk8s</finalName>
@@ -30,6 +37,11 @@
                     <source>15</source>
                     <target>15</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
